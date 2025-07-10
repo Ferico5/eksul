@@ -44,6 +44,10 @@ Eksul.init(
         this.setDataValue('members', JSON.stringify(value));
       },
     },
+    coach: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize: db,

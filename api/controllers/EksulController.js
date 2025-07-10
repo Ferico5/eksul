@@ -3,7 +3,7 @@ import Students from '../models/StudentsModel.js';
 
 export const addEksul = async (req, res) => {
   try {
-    const { name, day, start_time, end_time, members } = req.body;
+    const { name, day, start_time, end_time, members, coach } = req.body;
 
     await Eksul.create({
       name,
@@ -11,6 +11,7 @@ export const addEksul = async (req, res) => {
       start_time,
       end_time,
       members,
+      coach,
     });
 
     res.status(201).json({ msg: 'Eksul added!' });
@@ -64,8 +65,6 @@ export const singleEksul = async (req, res) => {
       memberNames = singleEksul.members;
     }
 
-    console.log('🎯 memberNames:', memberNames);
-
     const membersDetail = await Students.findAll({
       where: {
         name: memberNames,
@@ -95,7 +94,7 @@ export const updateEksul = async (req, res) => {
     }
 
     const updatedFields = {};
-    const allowedFields = ['name', 'day', 'start_time', 'end_time', 'members'];
+    const allowedFields = ['name', 'day', 'start_time', 'end_time', 'members', 'coach'];
 
     for (const field of allowedFields) {
       if (req.body[field] !== undefined) {
