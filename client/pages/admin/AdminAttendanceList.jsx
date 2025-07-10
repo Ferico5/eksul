@@ -23,11 +23,14 @@ const AdminAttendanceList = () => {
   }, [id_eksul]);
 
   return (
-    <div className="flex flex-col p-6 mt-20 font-outfit">
-      <div className='flex justify-between'>
-        <h1 className="text-3xl font-bold mb-6">Attendance History - {eksulName}</h1>
-        <button onClick={() => navigate('/admin/dashboard')} className="bg-gray-300 hover:bg-gray-400 hover:cursor-pointer text-black px-4 py-2 rounded h-10">
-          Return to Extracurricular List
+    <div className="flex flex-col px-6 mt-25 font-outfit">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pb-4">
+        <h1 className="text-3xl font-bold mb-2 lg:mb-6">Attendance History - {eksulName}</h1>
+        <button
+          onClick={() => navigate('/admin/dashboard')}
+          className="w-full sm:w-auto bg-gray-300 hover:bg-gray-400 hover:cursor-pointer text-black px-4 py-2 rounded h-10 text-sm sm:text-base text-center flex items-center justify-center gap-2"
+        >
+          <span className="hidden md:inline">Return to</span> Extracurricular List
         </button>
       </div>
 

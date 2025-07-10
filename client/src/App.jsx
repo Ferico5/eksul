@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,7 +9,7 @@ import StudentsEksulDetail from '../pages/students/StudentsEksulDetail';
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminAttendanceList from '../pages/admin/AdminAttendanceList';
-import AddAdmin from '../pages/admin/AddAdmin';
+import AdminEksulMember from '../pages/admin/AdminEksulMember';
 // import ServerError from '../pages/ServerError';
 // import PageNotFound from '../pages/PageNotFound';
 
@@ -98,19 +97,15 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: 'add-admin',
+            path: 'eksul_members/:id_eksul',
             element: (
               <ProtectedRoute>
-                <AddAdmin />
+                <AdminEksulMember />
               </ProtectedRoute>
             ),
           },
         ],
       },
-      // {
-      //   path: 'dashboard',
-      //   element: <StudentsDashboard />,
-      // },
       // {
       //   path: '/server-error',
       //   element: (

@@ -28,7 +28,6 @@ const StudentsLogin = () => {
           toast.error(response.data.msg);
         }
       } else {
-        // const response = await axios.post('https://vxw7nsf9-5000.asse.devtunnels.ms/students', {
         const response = await axios.post('http://localhost:5000/students', {
           name,
           password,

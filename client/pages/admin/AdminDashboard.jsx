@@ -114,7 +114,34 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleAdd = async () => {
+    const { name, day, start_time, end_time } = newEksulData;
+
+    if (!name.trim() || day.length === 0 || !start_time || !end_time) {
+      toast.error('All fields must be filled in!');
+      return;
+    }
+
+    const start = new Date(`2023-01-01T${start_time}`);
+    const end = new Date(`2023-01-01T${end_time}`);
+    if (start >= end) {
+      toast.error('Start time must be less than end time!');
+      return;
+    }
+
+    try {
+      await axios.post('http://localhost:5000/eksul', newEksulData);
+      toast.success('Extracurricular activity successfully added!');
+      setShowAddModal(false);
+      setNewEksulData({ name: '', day: [], start_time: '', end_time: '' });
+      fetchEksuls();
+    } catch (error) {
+      console.error('Failed to add extracurricular:', error);
+      toast.error('Failed to add extracurricular activities. Please contact developer!');
+    }
+  };
+
+  const handleUpdate = async () => {
     const { name, day, start_time, end_time } = formData;
 
     if (!name.trim() || day.length === 0 || !start_time || !end_time) {
@@ -147,10 +174,10 @@ const AdminDashboard = () => {
       <div className="flex justify-between items-center">
         <h1 className="mt-20 text-3xl font-bold mb-6 font-prata">Admin - Manage Extracurriculars</h1>
         <button onClick={() => setShowAddModal(true)} className="bg-indigo-600 text-white mt-13 px-4 py-2 rounded hover:bg-indigo-700 hover:cursor-pointer">
-          + Add New
+          + <span className="hidden sm:inline">Add </span>New
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {eksuls.map((eksul) => (
           <div key={eksul.id_eksul} className="bg-white shadow-lg rounded-xl p-6 border font-outfit">
             <h2 className="text-xl font-semibold text-[#1E293B] mb-2">{eksul.name}</h2>
@@ -163,12 +190,15 @@ const AdminDashboard = () => {
             <div className="text-sm text-gray-600 mb-4">
               <strong>Members:</strong> {eksul.members?.length || 0} students
             </div>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
               <button onClick={() => navigate(`/admin/attendance/${eksul.id_eksul}`)} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 hover:cursor-pointer">
                 Attendance
               </button>
               <button onClick={() => handleOpenAttendanceModal(eksul)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 hover:cursor-pointer">
                 Absence
+              </button>
+              <button onClick={() => navigate(`/admin/eksul_members/${eksul.id_eksul}`)} className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 hover:cursor-pointer">
+                Members
               </button>
               <button onClick={() => handleOpenModal(eksul)} className="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500 hover:cursor-pointer">
                 Update
@@ -227,35 +257,7 @@ const AdminDashboard = () => {
               >
                 Cancel
               </button>
-              <button
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 hover:cursor-pointer"
-                onClick={async () => {
-                  const { name, day, start_time, end_time } = newEksulData;
-
-                  if (!name.trim() || day.length === 0 || !start_time || !end_time) {
-                    toast.error('All fields must be filled in!');
-                    return;
-                  }
-
-                  const start = new Date(`2023-01-01T${start_time}`);
-                  const end = new Date(`2023-01-01T${end_time}`);
-                  if (start >= end) {
-                    toast.error('Start time must be less than end time!');
-                    return;
-                  }
-
-                  try {
-                    await axios.post('http://localhost:5000/eksul', newEksulData);
-                    toast.success('Extracurricular activity successfully added!');
-                    setShowAddModal(false);
-                    setNewEksulData({ name: '', day: [], start_time: '', end_time: '' });
-                    fetchEksuls();
-                  } catch (error) {
-                    console.error('Failed to add extracurricular:', error);
-                    toast.error('Failed to add extracurricular activities. Please contact developer!');
-                  }
-                }}
-              >
+              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 hover:cursor-pointer" onClick={handleAdd}>
                 Save
               </button>
             </div>
@@ -291,7 +293,7 @@ const AdminDashboard = () => {
               <button className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 hover:cursor-pointer" onClick={handleCloseModal}>
                 Cancel
               </button>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer" onClick={handleSubmit}>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer" onClick={handleUpdate}>
                 Save
               </button>
             </div>
