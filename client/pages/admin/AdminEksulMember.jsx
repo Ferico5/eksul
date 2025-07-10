@@ -13,7 +13,7 @@ const AdminEksulMember = () => {
   useEffect(() => {
     const fetchEksul = async () => {
       try {
-        const response = await axios.get(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${id_eksul}`);
+        const response = await axios.get(`http://localhost:5000/eksul/${id_eksul}`);
         setEksul(response.data.singleEksul);
         setMembers(response.data.members);
       } catch (error) {

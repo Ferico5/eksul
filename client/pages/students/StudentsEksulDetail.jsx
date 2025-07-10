@@ -16,7 +16,7 @@ const EksulDetail = () => {
   useEffect(() => {
     const fetchEksul = async () => {
       try {
-        const response = await axios.get(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${id}`);
+        const response = await axios.get(`http://localhost:5000/eksul/${id}`);
         setEksul(response.data.singleEksul);
         setMembers(response.data.members);
 
@@ -46,7 +46,7 @@ const EksulDetail = () => {
 
       const updatedMembers = Array.from(new Set([...existingNames, currentUserName]));
 
-      await axios.put(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${id}`, {
+      await axios.put(`http://localhost:5000/eksul/${id}`, {
         members: updatedMembers,
       });
 
@@ -67,7 +67,7 @@ const EksulDetail = () => {
 
       const updatedMembers = existingNames.filter((name) => name !== currentUserName);
 
-      await axios.put(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${id}`, {
+      await axios.put(`http://localhost:5000/eksul/${id}`, {
         members: updatedMembers,
       });
 
