@@ -11,6 +11,9 @@ const AdminDashboard = () => {
   const [showAttendanceModal, setShowAttendanceModal] = useState(false);
   const [attendanceDate, setAttendanceDate] = useState('');
   const [presentMembers, setPresentMembers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredEksuls = eksuls.filter((eksul) => eksul.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const [formData, setFormData] = useState({
     name: '',
@@ -180,41 +183,56 @@ const AdminDashboard = () => {
           + <span className="hidden sm:inline">Add </span>New
         </button>
       </div>
+
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search extracurricular by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full border border-gray-300 px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-outfit"
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {eksuls.map((eksul) => (
-          <div key={eksul.id_eksul} className="bg-white shadow-lg rounded-xl p-6 border font-outfit">
-            <h2 className="text-xl font-semibold text-[#1E293B] mb-2">{eksul.name}</h2>
-            <div className="text-sm text-gray-600 mb-1">
-              <strong>Days:</strong> {Array.isArray(eksul.day) ? eksul.day.join(', ') : eksul.day}
+        {filteredEksuls.length === 0 ? (
+          <p className="text-gray-500 font-outfit col-span-full">No extracurricular found with that name.</p>
+        ) : (
+          filteredEksuls.map((eksul) => (
+            <div key={eksul.id_eksul} className="bg-white shadow-lg rounded-xl p-6 border font-outfit">
+              <h2 className="text-xl font-semibold text-[#1E293B] mb-2">{eksul.name}</h2>
+              <div className="text-sm text-gray-600 mb-1">
+                <strong>Days:</strong> {Array.isArray(eksul.day) ? eksul.day.join(', ') : eksul.day}
+              </div>
+              <div className="text-sm text-gray-600 mb-1">
+                <strong>Time:</strong> {eksul.start_time} - {eksul.end_time}
+              </div>
+              <div className="text-sm text-gray-600 mb-1">
+                <strong>Members:</strong> {eksul.members?.length || 0} students
+              </div>
+              <div className="text-sm text-gray-600 mb-4">
+                <strong>Coach:</strong> {eksul.coach}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
+                <button onClick={() => navigate(`/admin/attendance/${eksul.id_eksul}`)} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 hover:cursor-pointer">
+                  Attendance
+                </button>
+                <button onClick={() => handleOpenAttendanceModal(eksul)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 hover:cursor-pointer">
+                  Absence
+                </button>
+                <button onClick={() => navigate(`/admin/eksul_members/${eksul.id_eksul}`)} className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 hover:cursor-pointer">
+                  Members
+                </button>
+                <button onClick={() => handleOpenModal(eksul)} className="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500 hover:cursor-pointer">
+                  Update
+                </button>
+                <button onClick={() => handleDelete(eksul.id_eksul)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 hover:cursor-pointer">
+                  Delete
+                </button>
+              </div>
             </div>
-            <div className="text-sm text-gray-600 mb-1">
-              <strong>Time:</strong> {eksul.start_time} - {eksul.end_time}
-            </div>
-            <div className="text-sm text-gray-600 mb-1">
-              <strong>Members:</strong> {eksul.members?.length || 0} students
-            </div>
-            <div className="text-sm text-gray-600 mb-4">
-              <strong>Coach:</strong> {eksul.coach}
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
-              <button onClick={() => navigate(`/admin/attendance/${eksul.id_eksul}`)} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 hover:cursor-pointer">
-                Attendance
-              </button>
-              <button onClick={() => handleOpenAttendanceModal(eksul)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 hover:cursor-pointer">
-                Absence
-              </button>
-              <button onClick={() => navigate(`/admin/eksul_members/${eksul.id_eksul}`)} className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600 hover:cursor-pointer">
-                Members
-              </button>
-              <button onClick={() => handleOpenModal(eksul)} className="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500 hover:cursor-pointer">
-                Update
-              </button>
-              <button onClick={() => handleDelete(eksul.id_eksul)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 hover:cursor-pointer">
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Modal Add */}
