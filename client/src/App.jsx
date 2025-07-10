@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,8 +10,7 @@ import AdminLogin from '../pages/admin/AdminLogin';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminAttendanceList from '../pages/admin/AdminAttendanceList';
 import AdminEksulMember from '../pages/admin/AdminEksulMember';
-// import ServerError from '../pages/ServerError';
-// import PageNotFound from '../pages/PageNotFound';
+import PageNotFound from '../pages/PageNotFound';
 
 // import components
 import Header from '../components/Header';
@@ -55,18 +54,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   path: '/server-error',
-      //   element: (
-      //     // <ProtectedRoute>
-      //       <ServerError />
-      //     // </ProtectedRoute>
-      //   ),
-      // },
-      // {
-      //   path: '*',
-      //   element: <PageNotFound />,
-      // },
     ],
   },
   {
@@ -106,19 +93,11 @@ const router = createBrowserRouter([
           },
         ],
       },
-      // {
-      //   path: '/server-error',
-      //   element: (
-      //     // <ProtectedRoute>
-      //       <ServerError />
-      //     // </ProtectedRoute>
-      //   ),
-      // },
-      // {
-      //   path: '*',
-      //   element: <PageNotFound />,
-      // },
     ],
+  },
+  {
+    path: '*',
+    element: <PageNotFound />,
   },
 ]);
 

@@ -43,7 +43,7 @@ const AdminDashboard = () => {
 
   const fetchEksuls = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/eksul');
+      const response = await axios.get('https://vxw7nsf9-5000.asse.devtunnels.ms/eksul');
       setEksuls(response.data.listEksul || []);
     } catch (error) {
       console.error('Failed to fetch extracurriculars:', error);
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:5000/eksul/${id}`);
+      await axios.delete(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${id}`);
       setEksuls(eksuls.filter((e) => e.id_eksul !== id));
       alert('Deleted successfully');
     } catch (error) {
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
 
   const handleSubmitAttendance = async () => {
     try {
-      await axios.post('http://localhost:5000/attendance', {
+      await axios.post('https://vxw7nsf9-5000.asse.devtunnels.ms/attendance', {
         eksulId: selectedEksul.id_eksul,
         date: attendanceDate,
         present_members: presentMembers,
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/eksul', newEksulData);
+      await axios.post('https://vxw7nsf9-5000.asse.devtunnels.ms/eksul', newEksulData);
       toast.success('Extracurricular activity successfully added!');
       setShowAddModal(false);
       setNewEksulData({ name: '', day: [], start_time: '', end_time: '', coach: '' });
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/eksul/${selectedEksul.id_eksul}`, formData);
+      await axios.put(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${selectedEksul.id_eksul}`, formData);
       toast.success('Extracurricular activity successfully updated!');
       handleCloseModal();
       fetchEksuls();

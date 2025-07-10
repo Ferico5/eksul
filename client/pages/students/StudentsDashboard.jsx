@@ -12,7 +12,7 @@ const StudentsDashboard = () => {
   useEffect(() => {
     const fetchEksuls = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/eksul');
+        const response = await axios.get('https://vxw7nsf9-5000.asse.devtunnels.ms/eksul');
         setEksuls(response.data.listEksul || []);
       } catch (error) {
         console.error('Failed to fetch extracurriculars:', error);

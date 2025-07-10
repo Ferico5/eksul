@@ -11,7 +11,7 @@ const AdminAttendanceList = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
-        const [attendanceRes, eksulRes] = await Promise.all([axios.get(`http://localhost:5000/attendance/${id_eksul}`), axios.get(`http://localhost:5000/eksul/${id_eksul}`)]);
+        const [attendanceRes, eksulRes] = await Promise.all([axios.get(`https://vxw7nsf9-5000.asse.devtunnels.ms/attendance/${id_eksul}`), axios.get(`https://vxw7nsf9-5000.asse.devtunnels.ms/eksul/${id_eksul}`)]);
         setAttendanceList(attendanceRes.data.attendanceList);
         setEksulName(eksulRes.data.singleEksul.name);
       } catch (error) {

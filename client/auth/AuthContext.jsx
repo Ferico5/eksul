@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (name, password, role = 'student') => {
     try {
-      const endpoint = role === 'admin' ? 'http://localhost:5000/admin/login' : 'http://localhost:5000/login';
+      const endpoint = role === 'admin' ? 'https://vxw7nsf9-5000.asse.devtunnels.ms/admin/login' : 'https://vxw7nsf9-5000.asse.devtunnels.ms/login';
 
       const response = await axios.post(endpoint, { name, password });
 
