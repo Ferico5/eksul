@@ -17,6 +17,7 @@ const AdminDashboard = () => {
     day: [],
     start_time: '',
     end_time: '',
+    coach: '',
   });
 
   const [showAddModal, setShowAddModal] = useState(false);
@@ -25,6 +26,7 @@ const AdminDashboard = () => {
     day: [],
     start_time: '',
     end_time: '',
+    coach: '',
   });
 
   const { user } = useAuth();
@@ -66,6 +68,7 @@ const AdminDashboard = () => {
       day: Array.isArray(eksul.day) ? eksul.day : [],
       start_time: eksul.start_time,
       end_time: eksul.end_time,
+      coach: eksul.coach,
     });
     setShowModal(true);
   };
@@ -73,7 +76,7 @@ const AdminDashboard = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedEksul(null);
-    setFormData({ name: '', day: [], start_time: '', end_time: '' });
+    setFormData({ name: '', day: [], start_time: '', end_time: '', coach: '' });
   };
 
   const handleOpenAttendanceModal = (eksul) => {
@@ -94,11 +97,11 @@ const AdminDashboard = () => {
         date: attendanceDate,
         present_members: presentMembers,
       });
-      alert('Absensi berhasil disimpan!');
+      alert('Attendance successfully saved!');
       setShowAttendanceModal(false);
     } catch (error) {
-      console.error('Gagal simpan absensi:', error);
-      alert('Gagal menyimpan absensi.');
+      console.error('Failed to save attendance:', error);
+      alert('Failed to save attendance.');
     }
   };
 
@@ -115,9 +118,9 @@ const AdminDashboard = () => {
   };
 
   const handleAdd = async () => {
-    const { name, day, start_time, end_time } = newEksulData;
+    const { name, day, start_time, end_time, coach } = newEksulData;
 
-    if (!name.trim() || day.length === 0 || !start_time || !end_time) {
+    if (!name.trim() || day.length === 0 || !start_time || !end_time || !coach) {
       toast.error('All fields must be filled in!');
       return;
     }
@@ -133,7 +136,7 @@ const AdminDashboard = () => {
       await axios.post('http://localhost:5000/eksul', newEksulData);
       toast.success('Extracurricular activity successfully added!');
       setShowAddModal(false);
-      setNewEksulData({ name: '', day: [], start_time: '', end_time: '' });
+      setNewEksulData({ name: '', day: [], start_time: '', end_time: '', coach: '' });
       fetchEksuls();
     } catch (error) {
       console.error('Failed to add extracurricular:', error);
@@ -142,9 +145,9 @@ const AdminDashboard = () => {
   };
 
   const handleUpdate = async () => {
-    const { name, day, start_time, end_time } = formData;
+    const { name, day, start_time, end_time, coach } = formData;
 
-    if (!name.trim() || day.length === 0 || !start_time || !end_time) {
+    if (!name.trim() || day.length === 0 || !start_time || !end_time || !coach) {
       toast.error('All fields must be filled in!');
       return;
     }
@@ -187,8 +190,11 @@ const AdminDashboard = () => {
             <div className="text-sm text-gray-600 mb-1">
               <strong>Time:</strong> {eksul.start_time} - {eksul.end_time}
             </div>
-            <div className="text-sm text-gray-600 mb-4">
+            <div className="text-sm text-gray-600 mb-1">
               <strong>Members:</strong> {eksul.members?.length || 0} students
+            </div>
+            <div className="text-sm text-gray-600 mb-4">
+              <strong>Coach:</strong> {eksul.coach}
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4">
               <button onClick={() => navigate(`/admin/attendance/${eksul.id_eksul}`)} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 hover:cursor-pointer">
@@ -245,6 +251,10 @@ const AdminDashboard = () => {
                 <label className="block text-sm font-medium">End Time</label>
                 <input type="time" name="end_time" value={newEksulData.end_time} onChange={(e) => setNewEksulData((prev) => ({ ...prev, end_time: e.target.value }))} className="w-full border px-3 py-2 rounded mt-1" required />
               </div>
+              <div>
+                <label className="block text-sm font-medium">Coach</label>
+                <input type="text" name="coach" value={newEksulData.coach} onChange={(e) => setNewEksulData((prev) => ({ ...prev, coach: e.target.value }))} className="w-full border px-3 py-2 rounded mt-1" required />
+              </div>
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
@@ -252,7 +262,7 @@ const AdminDashboard = () => {
                 className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 hover:cursor-pointer"
                 onClick={() => {
                   setShowAddModal(false);
-                  setNewEksulData({ name: '', day: [], start_time: '', end_time: '' });
+                  setNewEksulData({ name: '', day: [], start_time: '', end_time: '', coach: '' });
                 }}
               >
                 Cancel
@@ -287,6 +297,10 @@ const AdminDashboard = () => {
                 <label className="block text-sm font-medium">End Time</label>
                 <input type="time" name="end_time" value={formData.end_time} onChange={handleChange} className="w-full border px-3 py-2 rounded mt-1" />
               </div>
+              <div>
+                <label className="block text-sm font-medium">Coach</label>
+                <input type="text" name="coach" value={formData.coach} onChange={handleChange} className="w-full border px-3 py-2 rounded mt-1" />
+              </div>
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
@@ -313,7 +327,7 @@ const AdminDashboard = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">Pilih Anggota Hadir:</label>
+              <label className="block text-sm font-medium mb-2">Select Present Members:</label>
               <div className="max-h-40 overflow-y-auto space-y-1">
                 {(selectedEksul.members || []).map((member, index) => {
                   const name = typeof member === 'string' ? member : member.name;
@@ -332,7 +346,7 @@ const AdminDashboard = () => {
                 Cancel
               </button>
               <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:cursor-pointer" onClick={handleSubmitAttendance}>
-                Simpan
+                Save
               </button>
             </div>
           </div>

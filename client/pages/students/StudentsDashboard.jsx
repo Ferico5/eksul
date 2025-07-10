@@ -39,8 +39,11 @@ const StudentsDashboard = () => {
             <div className="text-sm text-gray-600 mb-1">
               <strong>Time:</strong> {eksul.start_time} - {eksul.end_time}
             </div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 mb-1">
               <strong>Members:</strong> {eksul.members?.length || 0} students
+            </div>
+            <div className="text-sm text-gray-600">
+              <strong>Coach:</strong> {eksul.coach}
             </div>
           </div>
         ))}

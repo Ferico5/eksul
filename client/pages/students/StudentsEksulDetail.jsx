@@ -97,6 +97,9 @@ const EksulDetail = () => {
       <p className="text-gray-700 mb-2">
         <strong>Time:</strong> {eksul.start_time} - {eksul.end_time}
       </p>
+      <p className="text-gray-700 mb-2">
+        <strong>Coach:</strong> {eksul.coach}
+      </p>
 
       {/* Buttons */}
       <div className="mt-4 flex gap-4">
